@@ -11,6 +11,7 @@ sub startup {
     $self->plugin( AssetPack => { pipes => [qw/Sass JavaScript Combine/] } );
     $self->asset->process(
         'app.css' => qw{
+            /sass/bootstrap.css
             /sass/main.scss
         },
     );
