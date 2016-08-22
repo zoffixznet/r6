@@ -5,7 +5,7 @@ package R6;
 use Mojo::Base 'Mojolicious';
 sub startup {
     my $self = shift;
-    $self->moniker('P6');
+    $self->moniker('R6');
     $self->plugin('Config');
     $self->secrets([ $self->config('mojo_secrets') ]);
     $self->plugin( AssetPack => { pipes => [qw/Sass JavaScript Combine/] } );
