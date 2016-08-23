@@ -11,6 +11,14 @@ has _ua => (
     default => sub { Mojo::UserAgent->new },
 );
 
+has _lp => (
+    Str, is => 'lazy',
+    default => sub {
+        my $self = shift;
+        return 'user=' . $self->_login . '&pass=' . $self->_pass
+    },
+);
+
 sub search {
     my ($self, %opts) = @_;
     $opts{not_status} = ['resolved', 'rejected']
@@ -30,8 +38,8 @@ sub search {
             : ()
         );
 
-    my $url = $self->_server . '/search/ticket?user='
-        . $self->_login . '&pass=' . $self->_pass . '&orderby=-Created'
+    my $url = $self->_server . '/search/ticket?' . $self->_lp
+        . '&orderby=-Created'
         . '&query=' . uri_escape("Queue = 'perl6' AND ($cond)");
 
     my $tx = $self->_ua->get($url);
@@ -55,14 +63,17 @@ sub search {
     print DnD \@tickets;
 }
 
-#sub ticket ($id) {
-#     my $url
-#     = "$!rt-url/ticket/$id/history?format=l&user=$!user&pass=$!pass";
+sub ticket {
+    my ($self, $id) = @_;
+    my $url = $self->_server . '/ticket/' . $id
+        . '/history?format=l&' . $self->_lp;
 
-#     my $s = $!ua.get: $url;
-#     fail $s.status-line unless $s.is-success;
 
-#     $s.content;
-# }
+    my $tx = $self->_ua->get($url);
+    return 0 unless $tx->success;
+    my $c = $tx->res->body;
+    use Acme::Dump::And::Dumper;
+    print DnD [ $c ];
+}
 
 1;
