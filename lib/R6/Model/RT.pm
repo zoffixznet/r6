@@ -1,73 +1,48 @@
 package R6::Model::RT;
 
-use 5.024;
+use Carp qw/croak/;
+use File::Spec::Functions qw/catfile/;
+use FindBin; FindBin->again;
+use R6::Model::RT::Schema;
 use Mew;
-use RT::Client::REST;
-use Acme::Dump::And::Dumper;
 
-has [qw/_login  _pass/] => Str;
-has _rt => ( is => 'lazy',
+has db_file => Str | InstanceOf['File::Temp'], (
+    is      => 'lazy',
+    default => sub { $ENV{R6_DB_FILE} // catfile $FindBin::Bin, qw/.. r6.db/ },
+);
+
+has _db => (
+    is      => 'lazy',
     default => sub {
-        my $self = shift;
-        my $rt = RT::Client::REST->new(
-            server  => 'http://rt.perl.org/',
-            timeout => 30,
+        my $db_file = shift->db_file;
+        my $exists_db_file = -e $db_file;
+        my $schema = R6::Model::RT::Schema->connect(
+            'dbi:SQLite:' . $db_file, '', '', { sqlite_unicode => 1 },
         );
-        eval {
-            $rt->login(
-                username => $self->_login,
-                password => $self->_pass,
-            );
-            1;
-        } or die "Problem logging into RT: $@";
-
-        $rt;
+        $schema->deploy unless $exists_db_file;
     }
 );
 
-sub show_ticket {
-    my ( $self, $ticket_id ) = @_;
-    my @trans = $self->_rt->get_transaction_ids( parent_id => $ticket_id );
-    print Dumper \@trans;
-    for my $id ( @trans ) {
-        my $t = $self->_rt->get_transaction(
-            parent_id => $ticket_id, id => $id
-        );
-        say "Transaction $id";
-        print Dumper $t;
+sub add {
+    my ( $self, @data ) = @_;
+    @data or return $self;
+
+    my $db = $self->_db;
+    for my $ticket ( @data ) {
+        $ticket->{tags} ||= ['UNTAGGED'];
+
+        $db->resultset('Dist')->update_or_create({
+            travis   => { status => $ticket->{travis_status} },
+            author => { # use same field for both, for now. TODO:fetch realname
+                author_id => $ticket->{author_id}, name => $ticket->{author_id},
+            },
+            dist_build_id => { id => $ticket->{build_id} },
+            map +( $_ => $ticket->{$_} ),
+                qw/name  meta_url  url  description  stars  issues
+                    date_updated  date_added/,
+        });
     }
+
+    $self;
 }
 
-sub search {
-    my $self = shift;
-    say 'Starting search';
-    my @ids = $self->_rt->search(
-        orderby => '-id',
-        type    => 'ticket',
-        query   => (
-            join ' AND ', "Queue = 'perl6'",
-                map "Status != '$_'", qw/stalled resolved  rejected/,
-        )
-    );
-    say 'Done with the search';
-
-    for my $id (@ids) {
-        my ( $ticket ) = $self->_rt->show( type => 'ticket', id => $id );
-        print Dumper $ticket;
-        print "Subject: ", $ticket->{Subject}, "\n";
-    }
-}
-
-
-# try {
-#     # Get ticket #10
-#   $ticket = $rt->show(type => 'ticket', id => 10);
-# } catch RT::Client::REST::UnauthorizedActionException with {
-#   print "You are not authorized to view ticket #10\n";
-# } catch RT::Client::REST::Exception with {
-#   # something went wrong.
-# };
-
-1;
-
-__END__
