@@ -9,7 +9,13 @@ has [qw/_login  _pass/] => Str;
 has _server => Str, default => 'https://rt.perl.org/REST/1.0';
 has _ua => (
     InstanceOf['Mojo::UserAgent'],
-    default => sub { Mojo::UserAgent->new },
+    default => sub {
+        Mojo::UserAgent->new(
+            connect_timeout    => 60,
+            inactivity_timeout => 60,
+            request_timeout    => 600,
+        );
+    },
 );
 
 has _lp => (
@@ -46,12 +52,8 @@ sub search {
         . '&query=' . uri_escape("Queue = 'perl6' AND ($cond)");
 
     my $tx = $self->_ua->get($url);
-    use Acme::Dump::And::Dumper;
-        die DnD [ $url, $tx,  $tx->success, $tx->res->code, $tx->res->body, $tx->res->headers->to_string ];
     return unless $tx->success;
     my $c = $tx->res->body;
-    use Acme::Dump::And::Dumper;
-    die DnD [ $c ];
     return unless $c =~ s{^RT/[\d.]+ 200 Ok\s+}{};
     $c = trim $c;
     my @tickets;
@@ -71,6 +73,7 @@ sub search {
         for ( split /\n\n--\n\n/xm, $c ) {
             my %ticket;
             for ( split /\n/ ) {
+                next unless length;
                 my ($key, $value) = split /:\s+/, $_, 2;
                 $ticket{$key} = $value // '';
             }
