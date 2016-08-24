@@ -43,16 +43,16 @@ sub search {
         . '&query=' . uri_escape("Queue = 'perl6' AND ($cond)");
 
     my $tx = $self->_ua->get($url);
-    return 0 unless $tx->success;
+    return unless $tx->success;
     my $c = $tx->res->body;
-    return 0 unless $c =~ s{^RT/[\d.]+ 200 Ok\s+}{};
+    return unless $c =~ s{^RT/[\d.]+ 200 Ok\s+}{};
     $c = trim $c;
 
     my @tickets;
     for ( split /\r?\n\r?/, $c ) {
         next unless /^\d+:.+/;
         my ( $id, $subject ) = split /: /, $_, 2;
-        my @tags = $subject =~ /(?<=\[) [^\]\n]+ (?=\])/gx;
+        my @tags = $subject =~ /(?<=\[) [\@A-Z]+ (?=\])/gx;
         push @tickets, {
             id      => $id,
             subject => $subject,

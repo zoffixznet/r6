@@ -31,7 +31,8 @@ sub startup {
     { # Root routes
         $r->get('/')->to('root#index');
         $r->get('/about')->to('root#about');
-        $r->get('/t/:tag')->to('tickets#tag')
+        $r->get('/t/:tag')->to('tickets#tag');
+        $r->get('/tag/:tag')->to('tickets#tag');
 
     }
 

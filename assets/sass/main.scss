@@ -11,3 +11,23 @@ footer {
 p {
     line-height: 1.85em;
 }
+
+h1 {
+    display: none;
+}
+
+.silent-list {
+    list-style: none;
+    margin-left: 0;
+    padding-left: 0;
+}
+
+#tags li {
+    display: inline-block;
+    margin-bottom: 2px;
+
+    a {
+        padding: 0px 3px;
+        font-size: 85%;
+    }
+}
