@@ -52,7 +52,7 @@ sub search {
     for ( split /\r?\n\r?/, $c ) {
         next unless /^\d+:.+/;
         my ( $id, $subject ) = split /: /, $_, 2;
-        my @tags = $subject =~ /(?<=\[) [^\]]+ (?=\])/gx;
+        my @tags = $subject =~ /(?<=\[) [^\]\n]+ (?=\])/gx;
         push @tickets, {
             id      => $id,
             subject => $subject,

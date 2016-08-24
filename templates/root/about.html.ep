@@ -1,0 +1,5 @@
+% layout 'default';
+% stash about_active => 1;
+
+<p>This site is run by <a href="https://twitter.com/zoffix">Zoffix Znet</a>
+  and lets users browse the Perl 6 queue on <a href="http://rt.perl.org/">rt.perl.org</a></p>

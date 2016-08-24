@@ -1,0 +1,20 @@
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Subject</th>
+      </tr>
+    </thead>
+    <tbody>
+      % for my $t ( @$tickets ) {
+        <tr>
+          <td><a href="https://rt.perl.org/Ticket/Display.html?id=<%= $t->{ticket_id} %>"
+            target="_blank"
+            >RT#<%= $t->{ticket_id} %></a></td>
+          <td><%= $t->{subject} %></td>
+        </tr>
+      % }
+    </tbody>
+  </table>
+</div>

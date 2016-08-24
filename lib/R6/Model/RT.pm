@@ -33,14 +33,9 @@ sub add {
         $ticket->{tags}->@* or $ticket->{tags} = ['UNTAGGED'];
 
         $db->resultset('Ticket')->update_or_create({
-            subject => 'Blag blag bug',
-            ticket_tag => [
-                {
-                    tag => {
-                        tag => 'Bug'
-                    },
-                }
-            ],
+            ticket_id => $ticket->{id},
+            subject   => $ticket->{subject},
+            tags      => (join "\n", $ticket->{tags}->@*),
         });
 
         # $db->resultset('Ticket')->update_or_create({
@@ -56,6 +51,20 @@ sub add {
     }
 
     $self;
+}
+
+sub all {
+    my $self = shift;
+    $self->_db->resultset('Ticket')->search({}, {
+        result_class => 'DBIx::Class::ResultClass::HashRefInflator'
+    })->all;
+}
+
+sub tags {
+    my ($self, @tags) = @_;
+    # TODO: fix this stupid shit with proper DBIC query
+    my $re = '^' . (join '|', map quotemeta, @tags) . '$';
+    grep $_->{tags} =~ /$re/m, $self->all;
 }
 
 1;

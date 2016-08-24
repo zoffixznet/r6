@@ -1,0 +1,6 @@
+% layout 'default';
+% stash home_active => 1;
+
+<p class="alert alert-success" role="alert"
+  >Showing <b><%= +@$tickets %></b> tickets tagged with <b><%= $tag %></b></p>
+%= include 'partial/tickets';
