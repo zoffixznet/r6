@@ -20,6 +20,7 @@ has _db => (
             'dbi:SQLite:' . $db_file, '', '', { sqlite_unicode => 1 },
         );
         $schema->deploy unless $exists_db_file;
+        $schema;
     }
 );
 
@@ -29,20 +30,32 @@ sub add {
 
     my $db = $self->_db;
     for my $ticket ( @data ) {
-        $ticket->{tags} ||= ['UNTAGGED'];
+        $ticket->{tags}->@* or $ticket->{tags} = ['UNTAGGED'];
 
-        $db->resultset('Dist')->update_or_create({
-            travis   => { status => $ticket->{travis_status} },
-            author => { # use same field for both, for now. TODO:fetch realname
-                author_id => $ticket->{author_id}, name => $ticket->{author_id},
-            },
-            dist_build_id => { id => $ticket->{build_id} },
-            map +( $_ => $ticket->{$_} ),
-                qw/name  meta_url  url  description  stars  issues
-                    date_updated  date_added/,
+        $db->resultset('Ticket')->update_or_create({
+            subject => 'Blag blag bug',
+            ticket_tag => [
+                {
+                    tag => {
+                        tag => 'Bug'
+                    },
+                }
+            ],
         });
+
+        # $db->resultset('Ticket')->update_or_create({
+        #     ticket_id => $ticket->{id},
+        #     subject   => $ticket->{subject},
+        #     ticket_tag      => [ map +{ tag => $_ }, $ticket->{tags}->@* ],
+        # }, {
+        #     # join => 'tags',
+        #     # prefetch => [
+        #     #     { tags => 'ticket_tag' },
+        #     # ],
+        # });
     }
 
     $self;
 }
 
+1;
