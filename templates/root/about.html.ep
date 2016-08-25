@@ -2,4 +2,26 @@
 % stash about_active => 1;
 
 <p>This site is run by <a href="https://twitter.com/zoffix">Zoffix Znet</a>
-  and lets users browse the Perl 6 queue on <a href="http://rt.perl.org/">rt.perl.org</a></p>
+  and lets users browse the Perl 6 queue on <a href="http://rt.perl.org/">rt.perl.org</a> using a better interface.</p>
+
+<h2>What's the login all about?</h2>
+
+<p>You can use the site read-only without any logins. If you wish to
+  comment on or modify the tickets, you'll need to provide your RT
+  login and password. If your regular credentials aren't working,
+  go to <a href="https://rt.perl.org/User/Prefs.html">RT's preferences
+  and set a CLI password</a>.</p>
+
+<p>The credentials you provide will be encrypted into a hashed cookie, stored
+in your browser. When interfacing with RT, your credentials will be decrypted
+from the cookie and sent to RT as part of the API request, which uses HTTPS.
+This site does not store your RT credentials anywhere on the server. Using
+the <i>Logout</i> button clears the credentials cookie from your browser.
+See the <a href="https://github.com/zoffixznet/r6">source code of this
+website</a> for further details.</p>
+
+<hr>
+
+<p>If the site recognizes your RT login as one of the Rakudo release managers',
+  additional interface options will be enabled, letting you mark tickets
+  as reviewed for the release or as release blockers.</p>

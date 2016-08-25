@@ -26,6 +26,22 @@ has _db => (
     }
 );
 
+sub set_reviewed {
+    my ( $self, $ticket_id, $status ) = @_;
+
+    $self->_db->resultset('Ticket')->search({
+        ticket_id => $ticket_id,
+    })->update({ is_reviewed => $status//1 });
+}
+
+sub set_blocker {
+    my ( $self, $ticket_id, $status ) = @_;
+
+    $self->_db->resultset('Ticket')->search({
+        ticket_id => $ticket_id,
+    })->update({ is_blocker => $status//1 });
+}
+
 sub add {
     my ( $self, @data ) = @_;
     @data or return $self;
@@ -60,19 +76,18 @@ sub add {
 
 sub all {
     my $self = shift;
-    $self->_db->resultset('Ticket')->search({}, {
+    nsort_by { -$_->{ticket_id} } $self->_db->resultset('Ticket')->search({}, {
         result_class => 'DBIx::Class::ResultClass::HashRefInflator'
     })->all;
 }
 
 sub tags {
-    my ($self, @tags) = @_;
+    my ($self, $tags, $source) = @_;
     # TODO: fix this stupid shit with proper DBIC query
-    my $re = '^' . (join '|', map +(quotemeta uc), @tags) . '$';
     nsort_by { -$_->{ticket_id} } grep {
-        my $tags = $_->{tags};
-        @tags == (grep $tags =~ /^\Q$_\E$/m, @tags);
-    } $self->all;
+        my $ticket_tags = $_->{tags};
+        @$tags == (grep $ticket_tags =~ /^\Q$_\E$/m, map uc, @$tags);
+    } $source ? @$source : $self->all;
 }
 
 1;

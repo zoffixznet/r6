@@ -7,8 +7,24 @@ html {
 footer {
     text-align: center;
     font-size: 80%;
+    transition: opacity 2s;
     opacity: .5;
     padding-bottom: 40px;
+
+    #github_link {
+        display: block;
+        margin: 10px auto 0;
+        width: 31px;
+        height: 30px;
+        background: url(/asset/pics/github.png);
+        overflow: hidden;
+        text-indent: -9999px;
+    }
+}
+
+footer:hover {
+    opacity: 1;
+    transition: opacity 1s;
 }
 
 p {
@@ -29,16 +45,16 @@ h1 {
     display: inline-block;
     margin-bottom: 2px;
 
-    a {
-        padding: 0px 3px;
-        font-size: 85%;
-    }
+//     a {
+//         padding: 0px 3px;
+//         font-size: 85%;
+//     }
 }
 
 #tickets-list {
     tr {
         td:first-child {
-            width: 8em;
+            width: 7em;
             a {
                 display: block;
             }
@@ -54,4 +70,9 @@ h1 {
 
 #site-nav {
     border-radius: 0;
+}
+
+#login-form,
+#search-form {
+    padding: 11px 15px;
 }

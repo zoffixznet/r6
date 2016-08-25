@@ -1,12 +1,12 @@
 <ul id="tags" class="silent-list">
   % for my $t ( @$tags ) {
-  % my $active_tag = stash('tag') // '';
+  % my $active_tag = uc (stash('tag') // '');
     <li>
       <a href="/t/<%= $t->{tag} %>"
-          class="btn btn-sm <%=
+          class="btn btn-xs <%=
             $active_tag eq $t->{tag} ? 'btn-primary' : 'btn-default'
           %>"
-        ><b><%= $t->{tag} %></b> (<%= $t->{count} %>)</a>
+        ><%= $t->{tag} %> <small>(<%= $t->{count} %>)</small></a>
     </li>
   % }
 </ul>

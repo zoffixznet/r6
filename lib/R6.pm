@@ -36,13 +36,7 @@ sub startup {
 
     }
 
-    # { # User section routes
-    #     $r->post('/login' )->to('user#login' );
-    #     $r->any( '/logout')->to('user#logout');
-    #
-    #     my $ru = $r->under('/user')->to('user#is_logged_in');
-    #     $ru->get('/')->to('user#index')->name('user/index');
-    # }
+
 }
 
 1;

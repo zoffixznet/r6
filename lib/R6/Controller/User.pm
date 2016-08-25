@@ -1,12 +1,8 @@
-package R6::Controller::Tickets;
+package R6::Controller::User;
 use Mojo::Base 'Mojolicious::Controller';
-use Mojo::Util qw/trim/;
 
-sub tag {
+sub index {
     my $self = shift;
-    my @tags = grep length, split /\s*,\s*/, trim $self->stash('tag');
-
-    # TODO: replace with saner logic, factor this out into one place
     my @tickets = $self->rt->all;
     my %tags; $tags{$_}++ for map split(' ', $_->{tags}), @tickets;
     $self->stash(
@@ -14,7 +10,7 @@ sub tag {
             map +{ tag => $_, count => $tags{$_} },
                 sort { $tags{$b} <=> $tags{$a} or $a cmp $b } keys %tags
         ],
-        tickets => [ $self->rt->tags(\@tags, \@tickets) ],
+        tickets => \@tickets
     );
 }
 

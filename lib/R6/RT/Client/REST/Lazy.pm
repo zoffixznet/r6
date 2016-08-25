@@ -100,8 +100,6 @@ sub search {
 
             $ticket{tags} = [ sort +uniq @tags ];
 
-            $unix_time = UnixDate($date, "%s");
-
             # filter out stuff we don't use yet
             push @tickets, +{
                 map +( $_ => $ticket{$_} ), qw/

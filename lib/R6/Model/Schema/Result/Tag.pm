@@ -9,8 +9,8 @@ __PACKAGE__->add_columns(  id => {
     is_auto_increment => 1,
   }, qw/tag/);
 __PACKAGE__->set_primary_key('id');
-__PACKAGE__->has_many('ticket_tag' => 'R6::Model::RT::Schema::Result::TicketTag', 'tag');
-__PACKAGE__->many_to_many('tickets' => 'ticket_tag', 'ticket');
+# __PACKAGE__->has_many('ticket_tag' => 'R6::Model::RT::Schema::Result::TicketTag', 'tag');
+# __PACKAGE__->many_to_many('tickets' => 'ticket_tag', 'ticket');
 
 #primary_column tag_id => { data_type => 'int'  };
 # column         tag    => { data_type => 'text' };
