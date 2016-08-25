@@ -12,7 +12,7 @@
 </ul>
 
 <div class="table-responsive">
-  <table class="table table-striped">
+  <table class="table table-striped" id="tickets-list">
     <thead>
       <tr>
         <th>ID</th>
@@ -25,7 +25,12 @@
           <td><a href="https://rt.perl.org/Ticket/Display.html?id=<%= $t->{ticket_id} %>"
             target="_blank"
             >RT#<%= $t->{ticket_id} %></a></td>
-          <td><%= $t->{subject} %></td>
+          <td>
+            % for my $tag ( split /\n/, $t->{tags}//'' ) {
+              <span class="ticket-list-tag">[<%= $tag %>]</span>
+            % }
+            <%= $t->{subject} %>
+          </td>
         </tr>
       % }
     </tbody>

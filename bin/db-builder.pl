@@ -14,8 +14,11 @@ my $rt = R6::RT::Client::REST::Lazy->new(
     pass  => $conf->{rt}{pass},
 );
 my $model = R6::Model::RT->new;
-my @tickets = $rt->search; #( after => '2016-08-20' );
+my @tickets = $rt->search; #( after => '2016-08-25');
 say 'Found ' . @tickets . ' tickets';
 $model->add(@tickets);
+
+
+__END__
 
 

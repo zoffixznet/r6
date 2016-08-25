@@ -1,3 +1,5 @@
+$text-color: #2C3E50;
+
 html {
     overflow-y: scroll;
 }
@@ -6,6 +8,7 @@ footer {
     text-align: center;
     font-size: 80%;
     opacity: .5;
+    padding-bottom: 40px;
 }
 
 p {
@@ -30,4 +33,25 @@ h1 {
         padding: 0px 3px;
         font-size: 85%;
     }
+}
+
+#tickets-list {
+    tr {
+        td:first-child {
+            width: 8em;
+            a {
+                display: block;
+            }
+        }
+    }
+}
+
+.ticket-list-tag {
+    color: $text-color;
+    opacity: .7;
+    font-size: 80%;
+}
+
+#site-nav {
+    border-radius: 0;
 }
