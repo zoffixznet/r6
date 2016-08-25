@@ -42,3 +42,5 @@ sub startup {
 1;
 
 __END__
+
+# ABSTRACT: turns baubles into trinkets to make dzil happy
