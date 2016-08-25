@@ -1,4 +1,4 @@
-package R6::Model::RT::Schema::Result::Tag;
+package R6::Model::Schema::Result::Tag;
 # use     R6::Model::ResultClass;
 use strictures 2;
 
@@ -16,7 +16,7 @@ __PACKAGE__->many_to_many('tickets' => 'ticket_tag', 'ticket');
 # column         tag    => { data_type => 'text' };
 
 # has_many ticket_tag
-#     => 'R6::Model::RT::Schema::Result::TicketTag' => 'tag';
+#     => 'R6::Model::Schema::Result::TicketTag' => 'tag';
 # many_to_many tickets => 'ticket_tag' => 'ticket';
 
 1;

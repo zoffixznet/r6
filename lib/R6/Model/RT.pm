@@ -3,7 +3,7 @@ package R6::Model::RT;
 use Carp qw/croak/;
 use File::Spec::Functions qw/catfile/;
 use FindBin; FindBin->again;
-use R6::Model::RT::Schema;
+use R6::Model::Schema;
 use Mojo::Util qw/decode/;
 use List::UtilsBy qw/nsort_by/;
 use Mew;
@@ -18,7 +18,7 @@ has _db => (
     default => sub {
         my $db_file = shift->db_file;
         my $exists_db_file = -e $db_file;
-        my $schema = R6::Model::RT::Schema->connect(
+        my $schema = R6::Model::Schema->connect(
             'dbi:SQLite:' . $db_file, '', '', { sqlite_unicode => 1 },
         );
         $schema->deploy unless $exists_db_file;
@@ -35,9 +35,12 @@ sub add {
         $ticket->{tags}->@* or $ticket->{tags} = ['UNTAGGED'];
 
         $db->resultset('Ticket')->update_or_create({
-            ticket_id => decode('UTF-8', $ticket->{id}),
-            subject   => decode('UTF-8', $ticket->{subject}),
-            tags      => decode('UTF-8', (join "\n", $ticket->{tags}->@*)),
+            ticket_id   => decode('UTF-8', $ticket->{id}),
+            subject     => decode('UTF-8', $ticket->{subject}),
+            tags        => decode('UTF-8', (join "\n", $ticket->{tags}->@*)),
+            creator     => decode('UTF-8', $ticket->{creator}),
+            created     => decode('UTF-8', $ticket->{created}),
+            lastupdated => decode('UTF-8', $ticket->{lastupdated}),
         });
 
         # $db->resultset('Ticket')->update_or_create({

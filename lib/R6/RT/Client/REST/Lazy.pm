@@ -6,6 +6,7 @@ use Mojo::Util qw/trim/;
 use Mojo::UserAgent;
 use URI::Escape;
 use List::Util qw/uniq/;
+use Date::Manip;
 
 
 has [qw/_login  _pass/] => Str;
@@ -40,6 +41,10 @@ sub search {
     # LastUpdated
 
     my $cond = join " AND ",
+        (
+            $opts{updated_after}
+                ? "LastUpdated >= '$opts{updated_after}'"  : ()
+        ),
         ($opts{after}  ? "Created >= '$opts{after}'"  : () ),
         ($opts{before} ? "Created < '$opts{before}'"  : () ),
         ($opts{status}
@@ -95,9 +100,13 @@ sub search {
 
             $ticket{tags} = [ sort +uniq @tags ];
 
+            $unix_time = UnixDate($date, "%s");
+
             # filter out stuff we don't use yet
             push @tickets, +{
-                map +( $_ => $ticket{$_} ), qw/tags id subject/
+                map +( $_ => $ticket{$_} ), qw/
+                    tags  id  subject  creator  created  lastupdated
+                /
             };
         }
     }
