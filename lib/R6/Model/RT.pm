@@ -90,4 +90,9 @@ sub tags {
     } $source ? @$source : $self->all;
 }
 
+sub try_login {
+    my ($self, $login, $pass) = @_;
+
+}
+
 1;

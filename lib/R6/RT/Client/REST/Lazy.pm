@@ -7,6 +7,9 @@ use Mojo::UserAgent;
 use URI::Escape;
 use List::Util qw/uniq/;
 use Date::Manip;
+use Mojo::UserAgent::CookieJar;
+use Mojo::Cookie::Response;
+use Mojo::URL;
 
 
 has [qw/_login  _pass/] => Str;
@@ -18,17 +21,16 @@ has _ua => (
             connect_timeout    => 60,
             inactivity_timeout => 60,
             request_timeout    => 600,
+            max_redirects      => 10,
         );
     },
 );
 
-has _lp => (
-    Str, is => 'lazy',
-    default => sub {
-        my $self = shift;
-        return 'user=' . $self->_login . '&pass=' . $self->_pass
-    },
-);
+sub _lp {
+    my $self = shift;
+    my ($login, $pass) = @_ ? @_ : ($self->_login, $self->_pass);
+    return 'user=' . uri_escape($login) . '&pass=' . uri_escape($pass);
+}
 
 sub search {
     my ($self, %opts) = @_;
@@ -124,6 +126,34 @@ sub ticket {
     my $c = $tx->res->body;
     use Acme::Dump::And::Dumper;
     print DnD [ $c ];
+}
+
+sub check_credentials {
+    my ($self, $login, $pass, $c) = @_;
+    my $tx;
+    if ( $c ) {
+        my $jar = Mojo::UserAgent::CookieJar->new;
+        my $origin = Mojo::URL->new( $self->_server )->host;
+        $jar->add(
+            Mojo::Cookie::Response->new->parse($c)->[0]->origin($origin)
+        );
+        $tx = Mojo::UserAgent->new( cookie_jar => $jar )->get(
+            $self->_server . '/ticket/1'
+        );
+    }
+    else {
+        $tx = $self->_ua->post(
+            $self->_server, form => {
+                user => $login,
+                pass => $pass
+            }
+        );
+    }
+    return -1 unless $tx->success;
+    print DnD [ map $_->to_string, $tx->res->cookies->@* ];
+    return 1 if $tx->res->body =~ m{\A RT/ [\d.]+ \s+ 200 \s+ Ok $}xm;
+    die DnD [ $tx->res->body ];
+    return 0;
 }
 
 1;

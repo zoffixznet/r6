@@ -25,7 +25,15 @@ sub startup {
     );
 
     $self->helper( rt => sub { state $db = R6::Model::RT->new; });
+    $self->helper( crypt => sub {
+        state $store = Session::Storage::Secure->new(
+            secret_key       => $self->config('encrypt_pass_phrase'),
+            default_duration => 60 * 60 * 24 * 7 * 4,
+        );
+    });
 
+    my $encoded = $store->encode( $data, $expires );
+    my $decoded = $store->decode( $encoded );
 
     my $r = $self->routes;
     { # Root routes
@@ -36,7 +44,13 @@ sub startup {
 
     }
 
+    { # User section routes
+        $r->post('/login' )->to('user#login' );
+        $r->any( '/logout')->to('user#logout');
 
+        # my $ru = $r->under('/user')->to('user#is_logged_in');
+        # $ru->get('/')->to('user#index')->name('user/index');
+    }
 }
 
 1;
