@@ -5,9 +5,6 @@ use Mojo::JSON qw/to_json/;
 sub login {
     my $self = shift;
 
-    use Acme::Dump::And::Dumper;
-    print DnD [ $self->param('login'), $self->param('pass') ];
-
     my $cookie = $self->rt->get_cookie(
         $self->param('login'), $self->param('pass')
     ) or return $self->redirect_to('/failed-login');

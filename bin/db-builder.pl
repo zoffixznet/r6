@@ -42,8 +42,6 @@ my $fetch_date = time;
 if ( $is_rebuild ) {
     my @tickets = $rt->search;
     say 'Found ' . @tickets . ' tickets';
-    # use Acme::Dump::And::Dumper;
-    # print DnD [ \@tickets ];
     $model_rt->add(\@tickets, all_reviewed => 1);
 }
 else {

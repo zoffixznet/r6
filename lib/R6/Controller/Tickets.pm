@@ -20,12 +20,14 @@ sub tag {
 
 sub mark_reviewed {
     my $self = shift;
+    return unless ($self->user)[1];
     $self->rt->set_reviewed( $self->param('ticket_id') );
     $self->redirect_to( $self->req->headers->referrer );
 }
 
 sub mark_blocker {
     my $self = shift;
+    return unless ($self->user)[1];
     $self->rt->set_blocker( $self->param('ticket_id') );
     $self->redirect_to( $self->req->headers->referrer );
 }
