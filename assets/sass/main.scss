@@ -45,11 +45,6 @@ h1 {
 #tags li {
     display: inline-block;
     margin-bottom: 2px;
-
-//     a {
-//         padding: 0px 3px;
-//         font-size: 85%;
-//     }
 }
 
 #tickets-list {
@@ -60,13 +55,20 @@ h1 {
                 display: block;
             }
         }
+
+        .ac {
+            white-space: nowrap;
+        }
     }
 }
 
-.ticket-list-tag {
-    color: $text-color;
-    opacity: .7;
-    font-size: 80%;
+#tickets-list {
+    .t {
+        color: $text-color;
+        opacity: .7;
+        font-size: 80%;
+        font-style: normal;
+    }
 }
 
 #site-nav {

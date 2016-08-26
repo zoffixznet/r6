@@ -48,12 +48,21 @@ sub set_blocker {
     })->update({ is_blocker => $status//1 });
 }
 
+sub delete {
+    my ( $self, @ids ) = @_;
+    @ids or return;
+    $self->_db->resultset('Ticket')
+        ->search({ ticket_id => \@ids })->delete_all;
+
+    $self;
+}
+
 sub add {
-    my ( $self, @data ) = @_;
-    @data or return $self;
+    my ( $self, $tickets, %opts ) = @_;
+    @$tickets or return $self;
 
     my $db = $self->_db;
-    for my $ticket ( @data ) {
+    for my $ticket ( @$tickets ) {
         $ticket->{tags}->@* or $ticket->{tags} = ['UNTAGGED'];
 
         $db->resultset('Ticket')->update_or_create({
@@ -63,6 +72,8 @@ sub add {
             creator     => decode('UTF-8', $ticket->{creator}),
             created     => decode('UTF-8', $ticket->{created}),
             lastupdated => decode('UTF-8', $ticket->{lastupdated}),
+
+            ( $opts{all_reviewed} ? ( is_reviewed => 1 ) : () ),
         });
 
         # $db->resultset('Ticket')->update_or_create({

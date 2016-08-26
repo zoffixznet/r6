@@ -19,7 +19,7 @@
         <th>ID</th>
         <th>Subject</th>
         % if ( $is_manager ) {
-          <th>Action</th>
+          <th class="ac">Action</th>
         % }
       </tr>
     </thead>
@@ -31,18 +31,18 @@
             >RT#<%= $t->{ticket_id} %></a></td>
           <td>
             % for my $tag ( split /\n/, $t->{tags}//'' ) {
-              <span class="ticket-list-tag">[<%= $tag %>]</span>
+              <i class="t">[<%= $tag %>]</i>
             % }
             <%= $t->{subject} %>
           </td>
           % if ( $is_manager ) {
-            <td>
-              <a href="/mark-reviewed/<%= $t->{ticket_id} %>"
+            <td class="ac">
+              <a href="/r/<%= $t->{ticket_id} %>"
                   class="btn btn-xs
                     <%= $t->{is_reviewed} ? 'btn-info' : 'btn-default' %>
                   "
                 ><i class="glyphicon glyphicon-ok-sign"></i></a>
-              <a href="/mark-blocker/<%= $t->{ticket_id} %>"
+              <a href="/b/<%= $t->{ticket_id} %>"
                   class="btn btn-xs
                     <%= $t->{is_blocker} ? 'btn-danger' : 'btn-default' %>
                   "

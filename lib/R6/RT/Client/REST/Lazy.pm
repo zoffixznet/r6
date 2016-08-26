@@ -35,7 +35,7 @@ sub _lp {
 sub search {
     my ($self, %opts) = @_;
     $opts{not_status} = ['resolved', 'rejected', 'stalled']
-        unless $opts{status} or $opts{not_status};
+        unless exists $opts{status} or exists $opts{not_status};
     $opts{format} //= 'l';
 
     # Figure out a way to use the LastUpdated thing to fetch only the needed
@@ -60,10 +60,12 @@ sub search {
             : ()
         );
 
+    $cond = "AND ($cond)" if $cond;
+
     my $url = $self->_server . '/search/ticket?' . $self->_lp
         . '&orderby=-Created'
         . '&format=' . $opts{format}
-        . '&query=' . uri_escape("Queue = 'perl6' AND ($cond)");
+        . '&query=' . uri_escape("Queue = 'perl6' $cond");
 
     my $tx = $self->_ua->get($url);
     return unless $tx->success;
@@ -105,7 +107,7 @@ sub search {
             # filter out stuff we don't use yet
             push @tickets, +{
                 map +( $_ => $ticket{$_} ), qw/
-                    tags  id  subject  creator  created  lastupdated
+                    tags  id  subject  creator  created  lastupdated  status
                 /
             };
         }
