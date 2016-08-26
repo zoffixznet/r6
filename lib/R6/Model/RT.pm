@@ -4,9 +4,15 @@ use Carp qw/croak/;
 use File::Spec::Functions qw/catfile/;
 use FindBin; FindBin->again;
 use R6::Model::Schema;
+use R6::RT::Client::REST::Lazy;
 use Mojo::Util qw/decode/;
 use List::UtilsBy qw/nsort_by/;
 use Mew;
+
+has _rt => InstanceOf['R6::RT::Client::REST::Lazy'], (
+    is => 'lazy',
+    default => sub { R6::RT::Client::REST::Lazy->new },
+);
 
 has db_file => Str | InstanceOf['File::Temp'], (
     is      => 'lazy',
@@ -90,9 +96,9 @@ sub tags {
     } $source ? @$source : $self->all;
 }
 
-sub try_login {
+sub get_cookie {
     my ($self, $login, $pass) = @_;
-
+    return $self->_rt->check_credentials($login, $pass);
 }
 
 1;

@@ -12,13 +12,17 @@
   go to <a href="https://rt.perl.org/User/Prefs.html">RT's preferences
   and set a CLI password</a>.</p>
 
-<p>The credentials you provide will be encrypted into a hashed cookie, stored
-in your browser. When interfacing with RT, your credentials will be decrypted
-from the cookie and sent to RT as part of the API request, which uses HTTPS.
-This site does not store your RT credentials anywhere on the server. Using
-the <i>Logout</i> button clears the credentials cookie from your browser.
-See the <a href="https://github.com/zoffixznet/r6">source code of this
-website</a> for further details.</p>
+<p>The site will use the provided credentials to authenticate with RT via
+its API and obtain an authentication cookie. That cookie will be encrypted
+and stored in another, signed, cookie in your browser.</p>
+
+<p>When interfacing with RT, the authentification cookie will be decrypted
+and sent to RT as part of the API request, which uses HTTPS.
+This site does not store your RT credentials or the RT authentification cookie
+anywhere on the server. Using the <i>Logout</i> button clears RT
+authentification cookie from this site's session cookie. See the
+<a href="https://github.com/zoffixznet/r6">source code of this website</a>
+for further details.</p>
 
 <hr>
 

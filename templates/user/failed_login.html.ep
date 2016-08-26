@@ -1,0 +1,11 @@
+% layout 'default';
+
+<p class="alert alert-danger" role="alert">
+  <i class="glyphicon glyphicon-alert"></i> <strong>Login failed.</strong>
+
+  See <a href="https://rt.perl.org/">rt.perl.org</a> to obtain an account, if
+  you don't have one. If your regular credentials aren't working,
+  go to <a href="https://rt.perl.org/User/Prefs.html">RT's preferences
+  and set a CLI password</a>.
+</p>
+

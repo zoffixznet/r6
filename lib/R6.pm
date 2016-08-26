@@ -4,12 +4,15 @@ package R6;
 
 use Mojo::Base 'Mojolicious';
 use R6::Model::RT;
+use Session::Storage::Secure;
+use Mojo::JSON qw/from_json/;
 
 sub startup {
     my $self = shift;
     $self->moniker('R6');
     $self->plugin('Config');
     $self->secrets([ $self->config('mojo_secrets') ]);
+    $self->session(expiration => 60 * 60 * 24 * 365 * 5);
     $self->plugin( AssetPack => { pipes => [qw/Sass JavaScript Combine/] } );
     $self->asset->process(
         'app.css' => qw{
@@ -32,8 +35,16 @@ sub startup {
         );
     });
 
-    my $encoded = $store->encode( $data, $expires );
-    my $decoded = $store->decode( $encoded );
+    $self->helper( user => sub {
+        my $self = shift;
+        my $rt_data = eval {
+            from_json $self->crypt->decode( $self->session('rt_data') )
+        } or return;
+
+        # remove the value of RT cookie from data... at least until we need it
+        $rt_data->{rt_cookie} = 1 if length $rt_data->{rt_cookie};
+        return @$rt_data{qw/rt_cookie  manager/};
+    });
 
     my $r = $self->routes;
     { # Root routes
@@ -46,7 +57,8 @@ sub startup {
 
     { # User section routes
         $r->post('/login' )->to('user#login' );
-        $r->any( '/logout')->to('user#logout');
+        $r->any('/logout')->to('user#logout');
+        $r->any('/failed-login')->to('user#failed_login');
 
         # my $ru = $r->under('/user')->to('user#is_logged_in');
         # $ru->get('/')->to('user#index')->name('user/index');
