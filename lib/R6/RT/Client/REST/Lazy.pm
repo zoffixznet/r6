@@ -12,7 +12,7 @@ use Mojo::Cookie::Response;
 use Mojo::URL;
 
 
-has [qw/_login  _pass/] => Str;
+has [qw/_login  _pass/] => Str, ( required => 0 );
 has _server => Str, default => 'https://rt.perl.org/REST/1.0';
 has _ua => (
     InstanceOf['Mojo::UserAgent'],
@@ -128,32 +128,38 @@ sub ticket {
     print DnD [ $c ];
 }
 
-sub check_credentials {
-    my ($self, $login, $pass, $c) = @_;
-    my $tx;
-    if ( $c ) {
-        my $jar = Mojo::UserAgent::CookieJar->new;
-        my $origin = Mojo::URL->new( $self->_server )->host;
-        $jar->add(
-            Mojo::Cookie::Response->new->parse($c)->[0]->origin($origin)
-        );
-        $tx = Mojo::UserAgent->new( cookie_jar => $jar )->get(
-            $self->_server . '/ticket/1'
-        );
-    }
-    else {
-        $tx = $self->_ua->post(
-            $self->_server, form => {
-                user => $login,
-                pass => $pass
-            }
-        );
-    }
+sub check_cookie {
+    my ($self, $cookie) = @_;
+
+    my $jar = Mojo::UserAgent::CookieJar->new;
+    my $origin = Mojo::URL->new( $self->_server )->host;
+    $jar->add(
+        Mojo::Cookie::Response->new->parse($cookie)
+            ->[0]->origin($origin)
+    );
+
+    my $tx = Mojo::UserAgent->new( cookie_jar => $jar )->get(
+        $self->_server . '/ticket/1'
+    );
+
     return -1 unless $tx->success;
-    print DnD [ map $_->to_string, $tx->res->cookies->@* ];
     return 1 if $tx->res->body =~ m{\A RT/ [\d.]+ \s+ 200 \s+ Ok $}xm;
-    die DnD [ $tx->res->body ];
     return 0;
+}
+
+sub check_credentials {
+    my ($self, $login, $pass) = @_;
+    my $tx = $self->_ua->post(
+        $self->_server, form => {
+            user => $login,
+            pass => $pass,
+        }
+    );
+    return unless $tx->success;
+    return +(map $_->to_string, $tx->res->cookies->@*)[0]
+        if $tx->res->body =~ m{\A RT/ [\d.]+ \s+ 200 \s+ Ok $}xm;
+
+    return;
 }
 
 1;
