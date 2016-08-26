@@ -57,6 +57,8 @@ sub startup {
         $r->get('/about')->to('root#about');
         $r->get('/t/:tag')->to('tickets#tag');
         $r->get('/tag/:tag')->to('tickets#tag');
+        $r->get('/mark-reviewed/:ticket_id')->to('tickets#mark_reviewed');
+        $r->get('/mark-blocker/:ticket_id')->to('tickets#mark_blocker');
 
     }
 

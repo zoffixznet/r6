@@ -12,11 +12,15 @@
 </ul>
 
 <div class="table-responsive">
+  % my ($is_logged_in, $is_manager) = user();
   <table class="table table-striped" id="tickets-list">
     <thead>
       <tr>
         <th>ID</th>
         <th>Subject</th>
+        % if ( $is_manager ) {
+          <th>Action</th>
+        % }
       </tr>
     </thead>
     <tbody>
@@ -31,6 +35,20 @@
             % }
             <%= $t->{subject} %>
           </td>
+          % if ( $is_manager ) {
+            <td>
+              <a href="/mark-reviewed/<%= $t->{ticket_id} %>"
+                  class="btn btn-xs
+                    <%= $t->{is_reviewed} ? 'btn-info' : 'btn-default' %>
+                  "
+                ><i class="glyphicon glyphicon-ok-sign"></i></a>
+              <a href="/mark-blocker/<%= $t->{ticket_id} %>"
+                  class="btn btn-xs
+                    <%= $t->{is_blocker} ? 'btn-danger' : 'btn-default' %>
+                  "
+                ><i class="glyphicon glyphicon-alert"></i></a>
+            </td>
+          % }
         </tr>
       % }
     </tbody>

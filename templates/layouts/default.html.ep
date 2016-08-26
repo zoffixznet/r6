@@ -33,9 +33,11 @@
             <form class="form-inline" action="/search" id="search-form">
               <div class="form-group">
                 <input type="text" class="form-control input-sm"
-                  placeholder="Search" name="s">
+                  placeholder="Search is NIY" name="s"
+                    disabled="disabled">
               </div>
               <button type="submit" class="btn btn-sm btn-default"
+                disabled="disabled"
                 ><i class="glyphicon glyphicon-search"></i></button>
             </form>
           </li>
