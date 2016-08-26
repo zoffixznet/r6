@@ -11,6 +11,11 @@ sub startup {
     my $self = shift;
     $self->moniker('R6');
     $self->plugin('Config');
+
+    # Check important data has been set up in the config file
+    $self->config($_) || die "Missing $_ in config file"
+        for qw/mojo_secrets  encrypt_pass_phrase/;
+
     $self->secrets([ $self->config('mojo_secrets') ]);
     $self->session(expiration => 60 * 60 * 24 * 365 * 5);
     $self->plugin( AssetPack => { pipes => [qw/Sass JavaScript Combine/] } );
