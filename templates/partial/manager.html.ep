@@ -1,0 +1,10 @@
+
+<form action="/manager-settings" method="POST" class="form-inline form-group">
+  <div class="form-group">
+    <label for="last-release-date">Last release date:</label>
+    <input type="text" class="form-control input-xs" name="last_release_date"
+      id="last-release-date" placeholder="2016-08-20"
+        value="<%= vars('last_release_date')//'' %>">
+    <button type="submit" class="btn btn-default btn-xs">Save</button>
+  </div>
+</form>

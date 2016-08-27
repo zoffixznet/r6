@@ -4,6 +4,7 @@ package R6;
 
 use Mojo::Base 'Mojolicious';
 use R6::Model::RT;
+use R6::Model::Vars;
 use Session::Storage::Secure;
 use Mojo::JSON qw/from_json/;
 
@@ -33,6 +34,14 @@ sub startup {
     );
 
     $self->helper( rt => sub { state $db = R6::Model::RT->new; });
+    $self->helper( vars => sub {
+        my $self = shift;
+        state $vars = R6::Model::Vars->new;
+        if    ( @_ == 2 ) { return $vars->save(@_); }
+        elsif ( @_ == 1 ) { return $vars->var( @_); }
+        return $vars;
+
+    });
     $self->helper( crypt => sub {
         state $store = Session::Storage::Secure->new(
             secret_key       => $self->config('encrypt_pass_phrase'),
@@ -60,6 +69,10 @@ sub startup {
         $r->get('/r/:ticket_id')->to('tickets#mark_reviewed');
         $r->get('/b/:ticket_id')->to('tickets#mark_blocker');
 
+    }
+
+    { # Manager routes
+        $r->any('/manager-settings')->to('manager#settings');
     }
 
     { # User section routes
