@@ -1,5 +1,8 @@
 % layout 'default';
 % stash home_active => 1;
 
-%= include 'partial/manager';
+% my ($is_logged_in, $is_manager) = user();
+% if ( $is_manager ) {
+  %= include 'partial/manager';
+% }
 %= include 'partial/tickets';

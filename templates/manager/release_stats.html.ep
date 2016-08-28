@@ -1,0 +1,18 @@
+% layout 'default';
+% stash home_active => 1;
+
+% my ($is_logged_in, $is_manager) = user();
+% if ( $is_manager ) {
+  %= include 'partial/manager';
+% }
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    Next release will be in <b><%= $time_until_release %></b>.
+      There are <b><%= $blockers %> blockers</b> and
+        <b><%= $unreviewed %> unreviewed</b> tickets.
+  </div>
+</div>
+
+
+%= include 'partial/tickets';

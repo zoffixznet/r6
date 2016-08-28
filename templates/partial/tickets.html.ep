@@ -1,15 +1,17 @@
-<ul id="tags" class="silent-list">
-  % for my $t ( @$tags ) {
-  % my $active_tag = uc (stash('tag') // '');
-    <li>
-      <a href="/t/<%= $t->{tag} %>"
-          class="btn btn-xs <%=
-            $active_tag eq $t->{tag} ? 'btn-primary' : 'btn-default'
-          %>"
-        ><%= $t->{tag} %> <small>(<%= $t->{count} %>)</small></a>
-    </li>
-  % }
-</ul>
+% if ( stash 'tags' ) {
+  <ul id="tags" class="silent-list">
+    % for my $t ( @{stash('tags')}  ) {
+    % my $active_tag = uc (stash('tag') // '');
+      <li>
+        <a href="/t/<%= $t->{tag} %>"
+            class="btn btn-xs <%=
+              $active_tag eq $t->{tag} ? 'btn-primary' : 'btn-default'
+            %>"
+          ><%= $t->{tag} %> <small>(<%= $t->{count} %>)</small></a>
+      </li>
+    % }
+  </ul>
+% }
 
 <div class="table-responsive">
   % my ($is_logged_in, $is_manager) = user();

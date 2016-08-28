@@ -19,7 +19,7 @@ has _ua => (
     default => sub {
         Mojo::UserAgent->new(
             connect_timeout    => 60,
-            inactivity_timeout => 60,
+            inactivity_timeout => 600,
             request_timeout    => 600,
             max_redirects      => 10,
         );

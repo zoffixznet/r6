@@ -64,8 +64,8 @@ sub startup {
     { # Root routes
         $r->get('/')->to('root#index');
         $r->get('/about')->to('root#about');
-        $r->get('/t/:tag')->to('tickets#tag');
-        $r->get('/tag/:tag')->to('tickets#tag');
+        $r->get('/t/:tag')->to('tickets#tag_action');
+        $r->get('/tag/:tag')->to('tickets#tag_action');
         $r->get('/r/:ticket_id')->to('tickets#mark_reviewed');
         $r->get('/b/:ticket_id')->to('tickets#mark_blocker');
 
@@ -73,6 +73,7 @@ sub startup {
 
     { # Manager routes
         $r->any('/manager-settings')->to('manager#settings');
+        $r->any('/release/stats')->to('manager#release_stats');
     }
 
     { # User section routes
