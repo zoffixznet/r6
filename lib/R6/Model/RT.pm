@@ -32,20 +32,22 @@ has _db => (
     }
 );
 
-sub set_reviewed {
-    my ( $self, $ticket_id, $status ) = @_;
+sub toggle_reviewed {
+    my ( $self, $ticket_id ) = @_;
 
-    $self->_db->resultset('Ticket')->search({
+    my $rs = $self->_db->resultset('Ticket')->search({
         ticket_id => $ticket_id,
-    })->update({ is_reviewed => $status//1 });
+    });
+    $rs->update({ is_reviewed => ! $rs->next->is_reviewed });
 }
 
-sub set_blocker {
-    my ( $self, $ticket_id, $status ) = @_;
+sub toggle_blocker {
+    my ( $self, $ticket_id ) = @_;
 
-    $self->_db->resultset('Ticket')->search({
+    my $rs = $self->_db->resultset('Ticket')->search({
         ticket_id => $ticket_id,
-    })->update({ is_blocker => $status//1 });
+    });
+    $rs->update({ is_blocker => ! $rs->next->is_blocker });
 }
 
 sub delete {

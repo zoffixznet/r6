@@ -8,7 +8,7 @@
 
 <div class="panel panel-default">
   <div class="panel-body">
-    Next release will be in <b><%= $time_until_release %></b>.
+    Next release <b><%= $when_release %></b>.
       There are <b><%= $blockers %> blockers</b> and
         <b><%= $unreviewed %> unreviewed</b> tickets.
   </div>
