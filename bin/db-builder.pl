@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use 5.024;
+use 5.022;
 use FindBin;
 BEGIN { unshift @INC, "$FindBin::Bin/../lib" }
 
