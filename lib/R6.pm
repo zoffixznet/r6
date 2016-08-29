@@ -12,7 +12,7 @@ sub startup {
     my $self = shift;
     $self->moniker('R6');
     $self->plugin('Config');
-    $self->config({ hypnotoad => { listen => ['http://*:4000'], proxy => 1 } });
+    $self->config({ hypnotoad => { listen => ['http://*:4000'], proxy => 1 }});
 
     # Check important data has been set up in the config file
     $self->config($_) || die "Missing $_ in config file"
