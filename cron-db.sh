@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 source /home/zoffix/.bashrc;
 cd /var/www/perl6.fail/;
 perl bin/db-builder.pl;
