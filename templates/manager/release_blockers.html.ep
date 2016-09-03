@@ -1,0 +1,19 @@
+% layout 'default';
+% stash home_active => 1;
+
+% my ($is_logged_in, $is_manager) = user();
+% if ( $is_manager ) {
+  %= include 'partial/manager';
+% }
+
+<div class="panel panel-danger">
+  <div class="panel-body">
+    There <%= $blockers == 1 ? 'is' : 'are' %>
+      <b><%= $blockers %> blocker<%= $blockers == 1 ? '' : 's' %></b>.
+  </div>
+</div>
+
+
+% if (@$tickets) {
+  %= include 'partial/tickets';
+% }

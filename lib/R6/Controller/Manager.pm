@@ -60,4 +60,26 @@ sub release_stats {
     );
 }
 
+sub release_blockers {
+    my $self = shift;
+
+    my $last_release = UnixDate( $self->vars('last_release_date'), '%s' )//0;
+    my @tickets = grep {
+        $_->{is_blocker} and UnixDate($_->{created}, '%s') >= $last_release
+    } $self->rt->all;
+
+    $self->respond_to(
+        html => { template => 'manager/release_blockers',
+            blockers => 0+@tickets,
+            tickets => \@tickets,
+        },
+        json => { json => {
+                total_blockers => 0+@tickets,
+                url => $self->url_for('/release/blockers')->to_abs,
+                tickets => \@tickets,
+            },
+        },
+    );
+}
+
 1;

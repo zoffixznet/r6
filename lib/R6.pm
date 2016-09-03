@@ -75,6 +75,7 @@ sub startup {
     { # Manager routes
         $r->any('/manager-settings')->to('manager#settings');
         $r->any('/release/stats')->to('manager#release_stats');
+        $r->any('/release/blockers')->to('manager#release_blockers');
     }
 
     { # User section routes
