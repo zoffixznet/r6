@@ -1,5 +1,7 @@
 $text-color: #2C3E50;
 $inverted-text-color: #2C3E50;
+$reviewed-color: #0099FF;
+$blocker-color: #EA0000;
 
 html {
     overflow-y: scroll;
@@ -48,6 +50,15 @@ h1 {
 }
 
 #tickets-list {
+    .r, .b {
+        border-left: 2px solid $reviewed-color;
+    }
+    .b {
+        border-left: 15px solid $blocker-color;
+        td:first-child {
+            padding-left: 3px;
+        }
+    }
     tr {
         td:first-child {
             width: 7em;
