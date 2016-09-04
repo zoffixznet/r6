@@ -42,12 +42,12 @@
           % if ( $is_manager ) {
             <td class="ac">
               <a href="/r/<%= $t->{ticket_id} %>"
-                  class="btn btn-xs
+                  class="reviewed btn btn-xs
                     <%= $t->{is_reviewed} ? 'btn-info' : 'btn-default' %>
                   "
                 ><i class="glyphicon glyphicon-ok-sign"></i></a>
               <a href="/b/<%= $t->{ticket_id} %>"
-                  class="btn btn-xs
+                  class="blocker btn btn-xs
                     <%= $t->{is_blocker} ? 'btn-danger' : 'btn-default' %>
                   "
                 ><i class="glyphicon glyphicon-alert"></i></a>
