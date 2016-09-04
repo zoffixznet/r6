@@ -30,7 +30,7 @@
         <tr class="<%=
           ($t->{is_reviewed} ? 'r' : '') . ' ' . ($t->{is_blocker} ? 'b' : '')
         %>">
-          <td><a href="https://rt.perl.org/Ticket/Display.html?id=<%= $t->{ticket_id} %>"
+          <td><a href="https://rt.perl.org/Ticket/Display.html?id=<%= $t->{ticket_id} %>#ticket-history"
             target="_blank"
             >RT#<%= $t->{ticket_id} %></a></td>
           <td>
