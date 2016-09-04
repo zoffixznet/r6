@@ -19,17 +19,17 @@
 <div class="panel with-nav-tabs panel-default">
   <div class="panel-heading">
     <ul class="nav nav-tabs">
-      <li><a href="#tab-tickets" data-toggle="tab"
+      <li class="active"><a href="#tab-tickets" data-toggle="tab"
         >Tickets</a></li>
-      <li class="active"><a href="#tab-commits" data-toggle="tab">Commits</a></li>
+      <li><a href="#tab-commits" data-toggle="tab">Commits</a></li>
     </ul>
   </div>
   <div class="panel-body">
       <div class="tab-content">
-        <div class="tab-pane fade" id="tab-tickets">
+        <div class="tab-pane active" id="tab-tickets">
           %= include 'partial/tickets';
         </div>
-        <div class="tab-pane fade in active" id="tab-commits">
+        <div class="tab-pane" id="tab-commits">
           %= include 'partial/commits';
         </div>
       </div>
