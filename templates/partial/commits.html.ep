@@ -7,12 +7,14 @@
           <a href="https://github.com/rakudo/rakudo/commit/<%= $c->{sha} %>"
             class="sha"><%= substr $c->{sha}, 0, 6 %></a>
 
-          <a href="/c/<%= $c->{sha} %>" class="btn btn-xs <%=
-              $c->{is_added} ? 'btn-info' : 'btn-primary'
-            %>"
-            ><i class="glyphicon glyphicon-<%=
-              $c->{is_added} ? 'ok' : 'question-sign'
-              %>"></i></a>
+          % if ( $is_manager ) {
+            <a href="/c/<%= $c->{sha} %>" class="btn btn-xs <%=
+                $c->{is_added} ? 'btn-info' : 'btn-primary'
+              %>"
+              ><i class="glyphicon glyphicon-<%=
+                $c->{is_added} ? 'ok' : 'question-sign'
+                %>"></i></a>
+          % }
 
           <span class="date"><%= scalar localtime $c->{date} %></span>
           <span class="author"><%= $c->{author} %></span>
