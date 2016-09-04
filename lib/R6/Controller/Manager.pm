@@ -38,21 +38,29 @@ sub release_stats {
         UnixDate($_->{created}, '%s') >= $last_release
     } $self->rt->all;
 
-    my $blockers = grep $_->{is_blocker}, @tickets;
-    my $reviewed = grep $_->{is_reviewed}, @tickets;
+    my @commits = $self->rakudo_commits->all;
+
+    my $blockers         = grep $_->{is_blocker},  @tickets;
+    my $reviewed_tickets = grep $_->{is_reviewed}, @tickets;
+    my $reviewed_commits = grep $_->{is_added},    @commits;
 
     my %info = (
         when_release => $when_release,
         tickets      => \@tickets,
+        commits      => \@commits,
         blockers     => $blockers,
-        unreviewed   => @tickets - $reviewed,
+        unreviewed_tickets => @tickets - $reviewed_tickets,
+        unreviewed_commits => @commits - $reviewed_commits,
     );
 
     $self->stash(%info);
     $self->respond_to(
         html => { template => 'manager/release_stats' },
         json => { json => {
-                %info{qw/when_release  blockers  unreviewed/},
+                %info{qw/
+                    when_release        blockers
+                    unreviewed_tickets  unreviewed_commits
+                /},
                 total_tickets => 0+@tickets,
                 url => $self->url_for('/release/stats')->to_abs,
             },

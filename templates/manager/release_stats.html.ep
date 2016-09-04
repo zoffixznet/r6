@@ -9,10 +9,29 @@
 <div class="panel panel-default">
   <div class="panel-body">
     Next release <b><%= $when_release %></b>.
-      There are <b><%= $blockers %> blockers</b> and
-        <b><%= $unreviewed %> unreviewed</b> tickets.
+      There are
+        <a href="/release/blockers"><b><%= $blockers %> blockers</b></a>,
+        <b><%= $unreviewed_tickets %> unreviewed</b> tickets, and
+        <b><%= $unreviewed_commits %> unreviewed</b> commits.
   </div>
 </div>
 
-
-%= include 'partial/tickets';
+<div class="panel with-nav-tabs panel-default">
+  <div class="panel-heading">
+    <ul class="nav nav-tabs">
+      <li><a href="#tab-tickets" data-toggle="tab"
+        >Tickets</a></li>
+      <li class="active"><a href="#tab-commits" data-toggle="tab">Commits</a></li>
+    </ul>
+  </div>
+  <div class="panel-body">
+      <div class="tab-content">
+        <div class="tab-pane fade" id="tab-tickets">
+          %= include 'partial/tickets';
+        </div>
+        <div class="tab-pane fade in active" id="tab-commits">
+          %= include 'partial/commits';
+        </div>
+      </div>
+  </div>
+</div>

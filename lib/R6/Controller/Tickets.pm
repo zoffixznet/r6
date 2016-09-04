@@ -44,4 +44,18 @@ sub mark_blocker {
     $self->redirect_to( $self->req->headers->referrer );
 }
 
+sub view_ticket {
+    my $self = shift;
+    $self->redirect_to(
+        'https://rt.perl.org/Ticket/Display.html?id=' . $self->stash('ticket')
+    );
+}
+
+sub mark_commit_as_added {
+    my $self = shift;
+    return $self->reply->not_found unless ($self->user)[1];
+    $self->rakudo_commits->toggle_added( $self->param('sha') );
+    $self->redirect_to( $self->req->headers->referrer );
+}
+
 1;

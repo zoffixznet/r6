@@ -5,7 +5,10 @@ package R6;
 use Mojo::Base 'Mojolicious';
 use R6::Model::RT;
 use R6::Model::Vars;
+use R6::Model::RakudoCommits;
 use Session::Storage::Secure;
+use URI::Find::Schemeless;
+use Mojo::Util qw/xml_escape/;
 use Mojo::JSON qw/from_json/;
 
 sub startup {
@@ -24,6 +27,7 @@ sub startup {
     $self->asset->process(
         'app.css' => qw{
             /sass/bootstrap.css
+            /sass/tab-panels.scss
             /sass/main.scss
         },
     );
@@ -34,7 +38,11 @@ sub startup {
         },
     );
 
+    $self->helper( htmlify => \&_htmlify );
     $self->helper( rt => sub { state $db = R6::Model::RT->new; });
+    $self->helper(
+        rakudo_commits => sub { state $db = R6::Model::RakudoCommits->new; }
+    );
     $self->helper( vars => sub {
         my $self = shift;
         state $vars = R6::Model::Vars->new;
@@ -65,9 +73,11 @@ sub startup {
     { # Root routes
         $r->get('/')->to('root#index');
         $r->get('/about')->to('root#about');
+        $r->get('/:ticket' => [ticket => qr/\d+/])->to('tickets#view_ticket');
         $r->get('/t/:tag')->to('tickets#tag_action');
         $r->get('/tag/:tag')->to('tickets#tag_action');
         $r->get('/r/:ticket_id')->to('tickets#mark_reviewed');
+        $r->get('/c/:sha')->to('tickets#mark_commit_as_added');
         $r->get('/b/:ticket_id')->to('tickets#mark_blocker');
 
     }
@@ -86,6 +96,19 @@ sub startup {
         # my $ru = $r->under('/user')->to('user#is_logged_in');
         # $ru->get('/')->to('user#index')->name('user/index');
     }
+}
+
+sub _htmlify {
+    # Convert RT# to RT links; convert links in text to links
+    my ($self, $text) = @_;
+    $text = xml_escape $text;
+    $text =~ s{(RT\s*#\s*(\d+))}{<a href="/$2">$1</a>}g;
+    URI::Find::Schemeless->new(sub {
+        my ($url, $text) = @_;
+        return qq{<a href="$url">$text</a>};
+    })->find(\$text);
+
+    $text;
 }
 
 1;

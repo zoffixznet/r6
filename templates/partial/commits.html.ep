@@ -1,0 +1,31 @@
+<div class="table-responsive">
+  % my ($is_logged_in, $is_manager) = user();
+  <ul class="silent-list" id="commits-list">
+    % for my $c ( @$commits ) {
+      <li<%== $c->{is_added} ? ' class="a"' : '' %>>
+        <p class="info">
+          <a href="https://github.com/rakudo/rakudo/commit/<%= $c->{sha} %>"
+            class="sha"><%= substr $c->{sha}, 0, 6 %></a>
+
+          <a href="/c/<%= $c->{sha} %>" class="btn btn-xs <%=
+              $c->{is_added} ? 'btn-info' : 'btn-primary'
+            %>"
+            ><i class="glyphicon glyphicon-<%=
+              $c->{is_added} ? 'ok' : 'question-sign'
+              %>"></i></a>
+
+          <span class="date"><%= scalar localtime $c->{date} %></span>
+          <span class="author"><%= $c->{author} %></span>
+        </p>
+
+        <p>
+          % my ($title, undef, @lines) = split /\n/, $c->{message};
+          <h2 class="h4"><%== htmlify $title %></h2>
+          % for ( @lines ) {
+            <%== htmlify $_ %> <br>
+          % }
+        </p>
+      </li>
+    % }
+  </ul>
+</div>
