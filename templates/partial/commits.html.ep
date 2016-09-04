@@ -5,7 +5,7 @@
       <li<%== $c->{is_added} ? ' class="a"' : '' %>>
         <p class="info">
           <a href="https://github.com/rakudo/rakudo/commit/<%= $c->{sha} %>"
-            class="sha"><%= substr $c->{sha}, 0, 6 %></a>
+            class="sha"><%= substr $c->{sha}, 0, 7 %></a>
 
           % if ( $is_manager ) {
             <a href="/c/<%= $c->{sha} %>" class="btn btn-xs <%=
