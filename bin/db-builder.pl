@@ -76,6 +76,7 @@ sub fetch_rakudo_commits {
         date    => $_->{commit}{author}{date},
     }, $c->content->{commits}->@*;
 
+    say 'Found ' . @commits . ' Rakudo commits to add';
     $model_com->add(@commits);
 
     1;
