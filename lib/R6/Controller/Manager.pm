@@ -76,6 +76,10 @@ sub release_blockers {
         $_->{is_blocker} and UnixDate($_->{created}, '%s') >= $last_release
     } $self->rt->all;
 
+
+    $_->{url} = $self->url_for('/' . $_->{ticket_id})->to_abs
+        for @tickets;
+
     $self->respond_to(
         html => { template => 'manager/release_blockers',
             blockers => 0+@tickets,
