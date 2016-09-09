@@ -32,7 +32,7 @@ my $model_var = R6::Model::Vars->new;
 
 fetch_tickets_gist($rt, $model_rt, $model_var, $is_rebuild);
 fetch_rakudo_commits($conf, $model_com);
-
+say "Finished";
 
 ##########################################################################
 
@@ -101,7 +101,7 @@ sub fetch_tickets_gist {
     if ( $is_rebuild ) {
         my @tickets = $rt->search;
         say 'Found ' . @tickets . ' tickets';
-        exit unless @tickets; # 0 tickets usually indicates an error
+        return unless @tickets; # 0 tickets usually indicates an error
         $model_rt->add(\@tickets, all_reviewed => 1);
     }
     else {
@@ -111,7 +111,7 @@ sub fetch_tickets_gist {
             ($last_fetch_date ? ( updated_after => $last_fetch_date ) : ()),
         );
         say 'Found ' . @all_tickets . ' total tickets';
-        exit unless @all_tickets; # don't do stuff if we have 0 tickets; may be an error
+        return unless @all_tickets; # don't do stuff if we have 0 tickets; may be an error
         my (@to_delete, @to_add);
         for ( @all_tickets ) {
             $_->{status} =~ /^(rejected|resolved|stalled|deleted)$/
