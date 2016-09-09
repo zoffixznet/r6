@@ -72,6 +72,8 @@ sub search {
     my $c = $tx->res->body;
     return unless $c =~ s{^RT/[\d.]+ 200 Ok\s+}{};
     $c = trim $c;
+    return [] if $c eq 'No matching results.';
+
     my @tickets;
     if ( $opts{format} eq 's' ) {
         # this branch is not really used any more
