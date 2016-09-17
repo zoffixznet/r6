@@ -38,6 +38,8 @@ sub startup {
         },
     );
 
+    $self->plugin('R6Tail', file => $self->config('release_log'));
+
     $self->helper( htmlify => \&_htmlify );
     $self->helper( rt => sub { state $db = R6::Model::RT->new; });
     $self->helper(
