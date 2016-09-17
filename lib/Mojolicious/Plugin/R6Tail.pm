@@ -215,7 +215,7 @@ sub register {
         '/release/progress' => sub {
             my $c = shift;
             my $ws_url = $c->req->url->to_abs->scheme('ws')->to_string;
-            $ws_url =~ s{\K/release/progress}{/ws};
+            $ws_url =~ s{(/release/progress)}{/ws$1};
             $c->render(
                 inline    => $plugin->template,
                 ws_url    => $ws_url,
