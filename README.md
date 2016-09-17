@@ -28,6 +28,8 @@ files indicate the copyright and license terms at the top of the file. Currently
 * Heavily modified version of
 [Mojolicious::Plugin::Webtail](https://metacpan.org/pod/Mojolicious::Plugin::Webtail) by hayajo, linsenced
 under same-as-Perl-5 license.
+* Bootstrap tab panels code originally taken from
+http://bootsnipp.com/snippets/featured/panels-with-nav-tabs
 * Bootstrap and its relevant parts:
 ```
 /*!
@@ -44,5 +46,3 @@ under same-as-Perl-5 license.
  */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 ```
-* Bootstrap tab panels code originally taken from
-http://bootsnipp.com/snippets/featured/panels-with-nav-tabs
