@@ -12,7 +12,7 @@ use constant DEFAULT_TAIL_OPTIONS => '-f -n +0';
 has 'template' => <<'TEMPLATE';
 <html><head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  <title><%= $file %> - Webtail</title>
+  <title>Rakudo Release Log</title>
   %= stylesheet begin
   /* Stolen from https://github.com/r7kamura/webtail */
   *  {
