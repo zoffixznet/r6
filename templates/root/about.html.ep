@@ -6,6 +6,9 @@
 
 <h2>What's the login all about?</h2>
 
+<p><strong>NOTE: THERE IS CURRENTLY NO POINT IN LOGGING IN. NO FEATURES ARE
+YET IMPLEMENTED.</strong></p>
+
 <p>You can use the site read-only without any logins. If you wish to
   comment on or modify the tickets, you'll need to provide your RT
   login and password. If your regular credentials aren't working,
