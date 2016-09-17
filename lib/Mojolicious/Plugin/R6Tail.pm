@@ -187,7 +187,7 @@ sub register {
     $plugin->tail_opts( $args->{tail_opts} || DEFAULT_TAIL_OPTIONS );
 
     $app->routes->websocket(
-        '/release/progress' => sub {
+        '/ws/release/progress' => sub {
             my $c = shift;
             my $tx = $c->tx;
             $plugin->_prepare_stream($app);
@@ -215,6 +215,7 @@ sub register {
         '/release/progress' => sub {
             my $c = shift;
             my $ws_url = $c->req->url->to_abs->scheme('ws')->to_string;
+            $ws_url =~ s{\K/release/progress}{/ws};
             $c->render(
                 inline    => $plugin->template,
                 ws_url    => $ws_url,
