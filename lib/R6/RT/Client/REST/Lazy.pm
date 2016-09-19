@@ -80,7 +80,7 @@ sub search {
         for ( split /\r?\n\r?/, $c ) {
             next unless /^\d+:.+/;
             my ( $id, $subject ) = split /: /, $_, 2;
-            my @tags = $subject =~ /(?<=\[) [\@A-Z]+ (?=\])/gx;
+            my @tags = map uc, $subject =~ /(?<=\[) [\@A-Z]+ (?=\])/gx;
             push @tickets, {
                 id      => $id,
                 subject => $subject,
@@ -97,7 +97,7 @@ sub search {
                 $ticket{lc $key} = $value // '';
             }
             ( $ticket{id} ) = $ticket{id} =~ /\d+/g;
-            my @tags = $ticket{subject} =~ /(?<=\[) [\@A-Za-z]+ (?=\])/gx;
+            my @tags = map uc, $ticket{subject} =~ /(?<=\[) [\@A-Za-z]+ (?=\])/gx;
             push @tags, map uc,
                 grep length, split /,/, $ticket{'cf.{tag}'}//'';
 
