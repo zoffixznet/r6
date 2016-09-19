@@ -97,12 +97,12 @@ sub search {
                 $ticket{lc $key} = $value // '';
             }
             ( $ticket{id} ) = $ticket{id} =~ /\d+/g;
-            my @tags = $ticket{subject} =~ /(?<=\[) [\@A-Z]+ (?=\])/gx;
+            my @tags = $ticket{subject} =~ /(?<=\[) [\@A-Za-z]+ (?=\])/gx;
             push @tags, map uc,
                 grep length, split /,/, $ticket{'cf.{tag}'}//'';
 
             # Strip tags from the start of the subject
-            $ticket{subject} =~ s/^ (\s* \[ [\@A-Z]+ \] \s*)+//x;
+            $ticket{subject} =~ s/^ (\s* \[ [\@A-Za-z]+ \] \s*)+//x;
 
             $ticket{tags} = [ sort +uniq @tags ];
 
