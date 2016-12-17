@@ -97,14 +97,25 @@ sub search {
                 $ticket{lc $key} = $value // '';
             }
             ( $ticket{id} ) = $ticket{id} =~ /\d+/g;
-            my @tags = map uc, $ticket{subject} =~ /(?<=\[) [\@A-Za-z]+ (?=\])/gx;
-            push @tags, map uc,
-                grep length, split /,/, $ticket{'cf.{tag}'}//'';
 
-            # Strip tags from the start of the subject
-            $ticket{subject} =~ s/^ (\s* \[ [\@A-Za-z]+ \] \s*)+//x;
+            # We take tags from cf.{tag} field and then take some from the
+            # subject line: case doesn't matter for tags at the start of the
+            # subject line (and we strip those tags from the subject), but
+            # case DOES matter for any tags that appear in the middle of the
+            # subject line, as letting them be anything interferes with random
+            # text, giving us bogus tags.
+            my @tags = grep length, split /,/, $ticket{'cf.{tag}'}//'';
+            my $tag_re   = qr/\[ [\@A-Z]+ \]/x;
+            my $tag_re_i = qr/\[ [\@A-Z]+ \]/ix;
+            while (
+                $ticket{subject} =~ s/^ \s* $tag_re_i*? ($tag_re_i) \s* //gx
+            ) {
+                push @tags, $1;
+            }
+            push @tags, $ticket{subject} =~ /$tag_re/g;
+            @tags = map s/[\[\]]//gr, @tags;
 
-            $ticket{tags} = [ sort +uniq @tags ];
+            $ticket{tags} = [ map uc, sort +uniq @tags ];
 
             # filter out stuff we don't use yet
             push @tickets, +{
@@ -202,4 +213,3 @@ __END__
     'timeworked' => '0',
     'owner' => 'Nobody'
   }
-
