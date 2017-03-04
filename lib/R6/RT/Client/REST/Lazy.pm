@@ -14,17 +14,14 @@ use Mojo::URL;
 
 has [qw/_login  _pass/] => Str, ( required => 0 );
 has _server => Str, default => 'https://rt.perl.org/REST/1.0';
-has _ua => (
-    InstanceOf['Mojo::UserAgent'],
-    default => sub {
-        Mojo::UserAgent->new(
-            connect_timeout    => 60,
-            inactivity_timeout => 600,
-            request_timeout    => 600,
-            max_redirects      => 10,
-        );
-    },
-);
+sub _ua {
+    Mojo::UserAgent->new(
+        connect_timeout    => 60,
+        inactivity_timeout => 600,
+        request_timeout    => 600,
+        max_redirects      => 10,
+    );
+}
 
 sub _lp {
     my $self = shift;
