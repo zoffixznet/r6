@@ -41,10 +41,11 @@ sub release_stats {
     my @commits = $self->rakudo_commits->all;
 
     for (@commits) {
-        $_->{log_message} = (split /\n/, $_->{message})[0]
-            . '[' . substr($_->{sha}, 0, 7) .']';
+        $_->{log_message} = '- ' (split /\n/, $_->{message})[0]
+            . ' [' . substr($_->{sha}, 0, 8) .']';
         $_->{log_message} =~ s/Fix/Fixed/g;
         $_->{log_message} =~ s/Make/Made/g;
+        $_->{log_message} =~ s/(\S+?[`><*]\S+)/`$1`/g;
     }
 
     my $blockers         = grep $_->{is_blocker},  @tickets;
