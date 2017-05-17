@@ -40,6 +40,13 @@ sub release_stats {
 
     my @commits = $self->rakudo_commits->all;
 
+    for (@commits) {
+        $_->{log_message} = (split /\n/, $_->{message})[0]
+            . '[' . substr($_->{sha}, 0, 7) .']';
+        $_->{log_message} =~ s/Fix/Fixed/g;
+        $_->{log_message} =~ s/Make/Made/g;
+    }
+
     my $blockers         = grep $_->{is_blocker},  @tickets;
     my $reviewed_tickets = grep $_->{is_reviewed}, @tickets;
     my $reviewed_commits = grep $_->{is_added},    @commits;

@@ -18,6 +18,7 @@
 
           <span class="date"><%= scalar localtime $c->{date} %></span>
           <span class="author"><%= $c->{author} %></span>
+          <textarea><%= $c->{log_message} %></textarea>
         </p>
 
         <p>
