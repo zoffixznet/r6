@@ -41,7 +41,7 @@ sub release_stats {
     my @commits = $self->rakudo_commits->all;
 
     for (@commits) {
-        $_->{log_message} = '- ' . (split /\n/, $_->{message})[0]
+        $_->{log_message} = '+ ' . (split /\n/, $_->{message})[0]
             . ' [' . substr($_->{sha}, 0, 8) .']';
         $_->{log_message} =~ s/Fix/Fixed/g;
         $_->{log_message} =~ s/Make/Made/g;
