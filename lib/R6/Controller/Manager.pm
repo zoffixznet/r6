@@ -46,6 +46,7 @@ sub release_stats {
         $_->{log_message} =~ s/(Fix|Add|Implement)/$1ed/gi;
         $_->{log_message} =~ s/Remove/$1d/gi;
         $_->{log_message} =~ s/Make/Made/gi;
+        $_->{log_message} =~ s/\bas\ fast\b/faster/gi;
         $_->{log_message} =~ s/\Q[io grant] //;
         $_->{log_message} =~ s/(\S*?[><*]\S*)/`$1`/g;
     }
