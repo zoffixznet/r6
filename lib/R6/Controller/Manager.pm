@@ -45,7 +45,7 @@ sub release_stats {
             . ' [' . substr($_->{sha}, 0, 8) .']';
         $_->{log_message} =~ s/Fix/Fixed/g;
         $_->{log_message} =~ s/Make/Made/g;
-        $_->{log_message} =~ s/\Q[io grant]//;
+        $_->{log_message} =~ s/\Q[io grant] //;
         $_->{log_message} =~ s/(\S+?[`><*]\S+)/`$1`/g;
     }
 
