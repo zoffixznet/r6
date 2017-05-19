@@ -44,7 +44,7 @@ sub release_stats {
         $_->{log_message} = '+ ' . (split /\n/, $_->{message})[0]
             . ' [' . substr($_->{sha}, 0, 8) .']';
         $_->{log_message} =~ s/(Fix|Add|Implement)/$1ed/gi;
-        $_->{log_message} =~ s/Remove/$1d/gi;
+        $_->{log_message} =~ s/(Remove)/$1d/gi;
         $_->{log_message} =~ s/Make/Made/gi;
         $_->{log_message} =~ s/\bas\ fast\b/faster/gi;
         $_->{log_message} =~ s/\Q[io grant] //;
