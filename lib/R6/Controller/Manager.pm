@@ -46,7 +46,7 @@ sub release_stats {
         $_->{log_message} =~ s/(Fix|Add|Implement)/$1ed/gi;
         $_->{log_message} =~ s/Make/Made/gi;
         $_->{log_message} =~ s/\Q[io grant] //;
-        $_->{log_message} =~ s/(\S*?[`><*]\S*)/`$1`/g;
+        $_->{log_message} =~ s/(\S*?[><*]\S*)/`$1`/g;
     }
 
     my $blockers         = grep $_->{is_blocker},  @tickets;
