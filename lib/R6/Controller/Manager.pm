@@ -43,9 +43,9 @@ sub release_stats {
     for (@commits) {
         $_->{log_message} = '+ ' . (split /\n/, $_->{message})[0]
             . ' [' . substr($_->{sha}, 0, 8) .']';
-        $_->{log_message} =~ s/(Fix|Add|Implement)/$1ed/gi;
-        $_->{log_message} =~ s/(Remove)/$1d/gi;
-        $_->{log_message} =~ s/Make/Made/gi;
+        $_->{log_message} =~ s/\b(Fix|Add|Implement)\b/$1ed/gi;
+        $_->{log_message} =~ s/\b(Remove)\b/$1d/gi;
+        $_->{log_message} =~ s/\bMake\b/Made/gi;
         $_->{log_message} =~ s/\bas\ fast\b/faster/gi;
         $_->{log_message} =~ s/\Q[io grant] //;
         $_->{log_message} =~ s/(\S*?[><*]\S*)/`$1`/g;
