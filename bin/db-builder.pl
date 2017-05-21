@@ -59,7 +59,7 @@ sub fetch_rakudo_commits {
     # we fetch on fresh DB build)
     my $newest_commit = ($model_com->all)[0] // {};
     my $c = $pit->repos->commits->compare(
-        base => $newest_commit->{sha} // '2016.12',
+        base => $newest_commit->{sha} // '2017.05',
         head => $master_branch,
     );
 
