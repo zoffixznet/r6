@@ -3,7 +3,7 @@ package Mojolicious::Plugin::R6Tail;
 use strict;
 use warnings;
 use Mojo::Base 'Mojolicious::Plugin';
-use Mojo::Util qw/slurp/;
+use Mojo::File qw/path/;
 use Carp ();
 use Encode ();
 
@@ -220,7 +220,7 @@ sub register {
                 inline    => $plugin->template,
                 ws_url    => $ws_url,
                 webtailrc => ( $plugin->webtailrc )
-                    ? slurp( $plugin->webtailrc ) : '',
+                    ? path( $plugin->webtailrc )->slurp : '',
                 file      => $args->{file} || 'STDIN',
             );
         },
