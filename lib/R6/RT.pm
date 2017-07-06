@@ -37,7 +37,7 @@ sub search {
         type    => 'ticket',
         query   => (
             join ' AND ', "Queue = 'perl6'",
-                map "Status != '$_'", qw/stalled resolved  rejected/,
+                map "Status != '$_'", qw/stalled  resolved  rejected  deleted/,
         )
     );
     say 'Done with the search';
