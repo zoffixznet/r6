@@ -20,7 +20,7 @@ sub index {
                 total => scalar(@tickets),
                 tags  => \@tags,
                 url   => $self->url_for('/')->to_abs,
-                ($self->param('full') ? tickets => \@tickets : ()),
+                ($self->param('full') ? (tickets => \@tickets) : ()),
             },
         },
     );
