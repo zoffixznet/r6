@@ -102,14 +102,12 @@ sub search {
             # subject line, as letting them be anything interferes with random
             # text, giving us bogus tags.
             my @tags = grep length, split /,/, $ticket{'cf.{tag}'}//'';
-            my $tag_re   = qr/\[ [\@A-Z]+ \]/x;
-            my $tag_re_i = qr/\[ [\@A-Z]+ \]/ix;
+            my $tag_re_i = qr/\[ [\@A-Z0-9.]+ \]/ix;
             while (
                 $ticket{subject} =~ s/^ \s* $tag_re_i*? ($tag_re_i) \s* //gx
             ) {
                 push @tags, $1;
             }
-            push @tags, $ticket{subject} =~ /$tag_re/g;
             @tags = map s/[\[\]]//gr, @tags;
             $ticket{tags} = [ sort +uniq map uc, @tags ];
 
