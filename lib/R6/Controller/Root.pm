@@ -6,8 +6,7 @@ sub index {
     my @tickets = $self->rt->all;
     my %tags; $tags{$_}++ for map split(' ', $_->{tags}), @tickets;
 
-    my @tags = map +{ tag => $_, count => $tags{$_} },
-                sort { $tags{$b} <=> $tags{$a} or $a cmp $b } keys %tags;
+    my @tags = map +{ tag => $_, count => $tags{$_} }, sort keys %tags;
     $self->stash(
         tags    => \@tags,
         tickets => \@tickets

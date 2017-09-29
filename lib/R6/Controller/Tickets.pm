@@ -12,8 +12,7 @@ sub tag_action {
     my @tagged_tickets = $self->rt->tags(\@tags, \@tickets);
     $self->stash(
         tags => [
-            map +{ tag => $_, count => $tags{$_} },
-                sort { $tags{$b} <=> $tags{$a} or $a cmp $b } keys %tags
+            map +{ tag => $_, count => $tags{$_} }, sort keys %tags
         ],
         tickets => \@tagged_tickets,
     );
