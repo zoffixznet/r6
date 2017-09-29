@@ -2,5 +2,6 @@
 /secret.txt
 /assets/assetpack.db
 /assets/cache
-r6.db
+/r6.db
 /bin/hypnotoad.pid
+/db-backups/
