@@ -111,8 +111,7 @@ sub search {
             }
             push @tags, $ticket{subject} =~ /$tag_re/g;
             @tags = map s/[\[\]]//gr, @tags;
-
-            $ticket{tags} = [ map uc, sort +uniq @tags ];
+            $ticket{tags} = [ sort +uniq map uc, @tags ];
 
             # filter out stuff we don't use yet
             push @tickets, +{
