@@ -14,6 +14,9 @@ my $build = Module::Build->new(
       'Date::Manip'     => '6.60',
       'IO::Socket::IP'  => '0.37',  # required to fix an issue with SSL in Mojo
       'IO::Socket::SSL' => '2.020', # Mojo::UserAgent
+      'Mew'             => '1.001006',
+      'Session::Storage::Secure' => 0,
+      'URI::Find::Schemeless' => 0,
     }
 );
 $build->create_build_script;

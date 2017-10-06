@@ -51,6 +51,9 @@
                     <%= $t->{is_blocker} ? 'btn-danger' : 'btn-default' %>
                   "
                 ><i class="glyphicon glyphicon-alert"></i></a>
+              <a href="/d/<%= $t->{ticket_id} %>"
+                  class="btn btn-xs btn-default delete-button"
+                ><i class="glyphicon glyphicon-trash"></i></a>
             </td>
           % }
         </tr>

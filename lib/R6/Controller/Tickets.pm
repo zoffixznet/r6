@@ -43,6 +43,13 @@ sub mark_blocker {
     $self->redirect_to( $self->req->headers->referrer );
 }
 
+sub delete {
+    my $self = shift;
+    return $self->reply->not_found unless ($self->user)[1];
+    $self->rt->delete( $self->param('ticket_id') );
+    $self->redirect_to( $self->req->headers->referrer );
+}
+
 sub view_ticket {
     my $self = shift;
     $self->redirect_to(

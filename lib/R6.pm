@@ -81,6 +81,7 @@ sub startup {
         $r->get('/r/:ticket_id')->to('tickets#mark_reviewed');
         $r->get('/c/:sha')->to('tickets#mark_commit_as_added');
         $r->get('/b/:ticket_id')->to('tickets#mark_blocker');
+        $r->get('/d/:ticket_id')->to('tickets#delete');
 
     }
 
