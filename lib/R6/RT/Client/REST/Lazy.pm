@@ -108,10 +108,11 @@ sub search {
             ) {
                 push @tags, $1;
             }
+
             @tags = map s/[\[\]]//gr, @tags;
-            push @tags, 'MOLD' if 1 < +(localtime)[5] - (
-                localtime(UnixDate($ticket{lastupdated}, '%s')//0)
-            )[5];
+            push @tags, 'MOLD' if 60*60*24*365*2 <
+                time - (UnixDate($ticket{lastupdated}, '%s')//0);
+
             $ticket{tags} = [ sort +uniq map uc, @tags ];
 
             # filter out stuff we don't use yet
