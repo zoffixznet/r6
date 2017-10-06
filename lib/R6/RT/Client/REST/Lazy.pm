@@ -1,12 +1,12 @@
 package R6::RT::Client::REST::Lazy;
 use 5.024;
 
+use Date::Manip;
 use Mew;
 use Mojo::Util qw/trim/;
 use Mojo::UserAgent;
 use URI::Escape;
 use List::Util qw/uniq/;
-use Date::Manip;
 use Mojo::UserAgent::CookieJar;
 use Mojo::Cookie::Response;
 use Mojo::URL;
@@ -109,6 +109,9 @@ sub search {
                 push @tags, $1;
             }
             @tags = map s/[\[\]]//gr, @tags;
+            push @tags, 'MOLD' if 1 < +(localtime)[5] - (
+                localtime(UnixDate($ticket{lastupdated}, '%s')//0)
+            )[5];
             $ticket{tags} = [ sort +uniq map uc, @tags ];
 
             # filter out stuff we don't use yet
@@ -133,8 +136,8 @@ sub ticket {
     my $tx = $self->_ua->get($url);
     return 0 unless $tx->success;
     my $c = $tx->res->body;
-    use Acme::Dump::And::Dumper;
-    print DnD [ $c ];
+    # use Acme::Dump::And::Dumper;
+    # print DnD [ $c ];
 }
 
 sub check_cookie {
