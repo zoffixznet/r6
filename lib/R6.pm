@@ -76,8 +76,8 @@ sub startup {
         $r->get('/')->to('root#index');
         $r->get('/about')->to('root#about');
         $r->get('/:ticket' => [ticket => qr/\d+/])->to('tickets#view_ticket');
-        $r->get('/t/:tag')->to('tickets#tag_action');
-        $r->get('/tag/:tag')->to('tickets#tag_action');
+        $r->get('/t/#tag')->to('tickets#tag_action');
+        $r->get('/tag/#tag')->to('tickets#tag_action');
         $r->get('/r/:ticket_id')->to('tickets#mark_reviewed');
         $r->get('/c/:sha')->to('tickets#mark_commit_as_added');
         $r->get('/b/:ticket_id')->to('tickets#mark_blocker');
