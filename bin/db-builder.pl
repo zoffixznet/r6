@@ -88,7 +88,11 @@ sub fetch_tickets_gist {
     # the requests fails
 
     my $last_fetch_date = $model_var->var('db_tickets_gist_last_updated') // 0;
-    $last_fetch_date = strftime '%Y-%m-%d', localtime $last_fetch_date
+    
+    # we adjust it backwards by 1 day; some tickets are missing for some reason,
+    # perhaps the change in date-time from last fetch creates a gap or something
+    # and the tickets get lost in that gap or something
+    $last_fetch_date = strftime '%Y-%m-%d', localtime $last_fetch_date - 60*60*24
         if $last_fetch_date;
 
     say "Fetching tickets updated since $last_fetch_date";
